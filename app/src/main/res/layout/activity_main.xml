@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlack"
+    tools:context=".MainActivity">
+
+    <TextView
+        style="@style/TitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewTitle"
+        android:text="Tic Tac Toe"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="@style/ButtonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonPlayGame"
+        android:text="Play"
+        android:layout_marginTop="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/textViewTitle"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonPlayBest3"
+        android:tag="3"
+        android:text="@string/StrBestThree"
+        android:textSize="30sp"
+        android:layout_below="@id/buttonPlayGame"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonPlayBest5"
+        android:tag="5"
+        android:text="@string/StrBestFive"
+        android:textSize="30sp"
+        android:layout_below="@id/buttonPlayBest3"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonJustPlay"
+        android:tag="0"
+        android:text="@string/StrNormalPlay"
+        android:textSize="30sp"
+        android:layout_below="@id/buttonPlayBest5"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/imageButtonSettings"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="centerInside"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="3dp"
+        android:background="@color/transparent"
+        android:src="@drawable/settings_512px_white"/>
+
+</RelativeLayout>
