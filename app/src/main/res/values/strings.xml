@@ -3,4 +3,7 @@
     <string name="StrBestThree">Best of 3</string>
     <string name="StrBestFive">Best of 5</string>
     <string name="StrNormalPlay">Just Play</string>
+    <string name="StrPlay">Play</string>
+    <string name="StrTitle">Tic Tac Toe</string>
+    <string name="StrSettingsBDescription">Go to settings activity</string>
 </resources>

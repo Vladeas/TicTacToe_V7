@@ -23,6 +23,7 @@
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textSize">40sp</item>
         <item name="android:background">@color/colorWhite</item>
+        <item name="android:layout_margin">10dp</item>
     </style>
 
 </resources>

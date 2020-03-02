@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button buttonPlayGame = findViewById(R.id.buttonPlayGame);
         Button buttonPlayBest3 =  findViewById(R.id.buttonPlayBest3);
         Button buttonPlayBest5 =  findViewById(R.id.buttonPlayBest5);
-        Button buttonJustPlay = findViewById(R.id.buttonJustPlay);
+        Button buttonJustPlay = findViewById(R.id.buttonPlayNormal);
         ImageButton imageButtonSettings = findViewById(R.id.imageButtonSettings);
 
         buttonPlayGame.setOnClickListener(this);
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonPlayBest5:
                 configureBestFiveButton();
                 break;
-            case R.id.buttonJustPlay:
+            case R.id.buttonPlayNormal:
                 configureNormalPlayButton();
                 break;
             case R.id.imageButtonSettings:
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void configurePlayButton() {
         buttonVisibility(findViewById(R.id.buttonPlayBest3));
         buttonVisibility(findViewById(R.id.buttonPlayBest5));
-        buttonVisibility(findViewById(R.id.buttonJustPlay));
+        buttonVisibility(findViewById(R.id.buttonPlayNormal));
     }
 
     private void configureBestThreeButton() {

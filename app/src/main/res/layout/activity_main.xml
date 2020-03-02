@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textViewTitle"
-        android:text="Tic Tac Toe"
+        android:text="@string/StrTitle"
         android:layout_marginTop="50dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
@@ -22,52 +22,51 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonPlayGame"
-        android:text="Play"
+        android:text="@string/StrPlay"
         android:layout_marginTop="70dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/textViewTitle"/>
 
     <Button
+        style="@style/ButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonPlayBest3"
-        android:tag="3"
         android:text="@string/StrBestThree"
-        android:textSize="30sp"
         android:layout_below="@id/buttonPlayGame"
         android:layout_centerHorizontal="true"
         android:visibility="gone"/>
 
     <Button
+        style="@style/ButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonPlayBest5"
-        android:tag="5"
         android:text="@string/StrBestFive"
-        android:textSize="30sp"
         android:layout_below="@id/buttonPlayBest3"
         android:layout_centerHorizontal="true"
         android:visibility="gone"/>
 
     <Button
+        style="@style/ButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonJustPlay"
-        android:tag="0"
+        android:id="@+id/buttonPlayNormal"
         android:text="@string/StrNormalPlay"
-        android:textSize="30sp"
         android:layout_below="@id/buttonPlayBest5"
         android:layout_centerHorizontal="true"
         android:visibility="gone"/>
 
     <ImageButton
+        style="@style/ButtonText"
         android:id="@+id/imageButtonSettings"
+        android:contentDescription="@string/StrSettingsBDescription"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:scaleType="centerInside"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="0dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginBottom="3dp"
         android:background="@color/transparent"
         android:src="@drawable/settings_512px_white"/>
