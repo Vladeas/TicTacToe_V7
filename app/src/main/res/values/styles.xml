@@ -22,8 +22,9 @@
     <style name="ButtonText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textSize">40sp</item>
-        <item name="android:background">@color/colorWhite</item>
-        <item name="android:layout_margin">10dp</item>
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:padding">3dp</item>
     </style>
 
 </resources>

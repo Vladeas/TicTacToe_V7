@@ -4,6 +4,8 @@
     <string name="StrBestFive">Best of 5</string>
     <string name="StrNormalPlay">Just Play</string>
     <string name="StrPlay">Play</string>
-    <string name="StrTitle">Tic Tac Toe</string>
+    <string name="StrMainTitle">Tic Tac Toe</string>
     <string name="StrSettingsBDescription">Go to settings activity</string>
+    <string name="StrSettingsTitle">Settings</string>
+    <string name="StrGoBack">Back</string>
 </resources>
