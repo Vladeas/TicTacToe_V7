@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private final static int three = 3, five = 5, unDefined = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,11 +23,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    /*
-        - use setOnClickListener for the play button
-        - if pressed call the appropriate functions
-     */
-    public void configureButtons(){
+
+    public void configureButtons(){ // use findViewById & setOnClickListener's for the buttons
         Button buttonPlayGame = findViewById(R.id.buttonPlayGame);
         Button buttonPlayBest3 =  findViewById(R.id.buttonPlayBest3);
         Button buttonPlayBest5 =  findViewById(R.id.buttonPlayBest5);
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Override
-    public void onClick(View v){
+    public void onClick(View v){ // call each button method when button is pressed
         switch (v.getId()){
             case R.id.buttonPlayGame:
                 configurePlayButton();
@@ -63,27 +62,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void configurePlayButton() {
-        buttonVisibility(findViewById(R.id.buttonPlayBest3));
-        buttonVisibility(findViewById(R.id.buttonPlayBest5));
-        buttonVisibility(findViewById(R.id.buttonPlayNormal));
-    }
+
 
     private void configureBestThreeButton() {
         Intent i = new Intent(MainActivity.this,GameActivity.class);
-        i.putExtra("Extra_Game_Type",3);
+        i.putExtra("Extra_Game_Type",three);
         startActivity(i);
     }
 
     private void configureBestFiveButton() {
         Intent i = new Intent(MainActivity.this,GameActivity.class);
-        i.putExtra("Extra_Game_Type",5);
+        i.putExtra("Extra_Game_Type",five);
         startActivity(i);
     }
 
     private void configureNormalPlayButton() {
         Intent i = new Intent(MainActivity.this,GameActivity.class);
-        i.putExtra("Extra_Game_Type",0);
+        i.putExtra("Extra_Game_Type",unDefined);
         startActivity(i);
     }
 
@@ -92,10 +87,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(i);
     }
 
-    /*
-        - If The button is visible make it invisible and vice versa
-     */
-    private void buttonVisibility(View v){
+
+    private void configurePlayButton() { // show/hide play options
+        buttonVisibility(findViewById(R.id.buttonPlayBest3));
+        buttonVisibility(findViewById(R.id.buttonPlayBest5));
+        buttonVisibility(findViewById(R.id.buttonPlayNormal));
+    }
+
+
+    private void buttonVisibility(View v){ //If The button is visible make it invisible and vice versa
         if(v.getVisibility() == View.VISIBLE) {
             v.setVisibility(View.INVISIBLE);
         }else{

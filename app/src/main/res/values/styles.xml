@@ -19,12 +19,21 @@
     </style>
 
 
-    <style name="ButtonText" parent="TextAppearance.AppCompat">
+    <style name="ButtonStyle" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textSize">40sp</item>
         <item name="android:background">@drawable/rounded_button</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:padding">3dp</item>
+    </style>
+
+    <style name="SecondaryButtonStyle" parent="ButtonStyle">
+        <item name="android:textSize">30sp</item>
+    </style>
+    
+    <style name="ImageButtonGameBoard" parent="TextAppearance.AppCompat">
+        <item name="android:background">@drawable/fort_512px_white</item>
+        <item name="android:layout_margin">5dp</item>
     </style>
 
 </resources>

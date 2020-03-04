@@ -12,14 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textViewTitle"
-        android:text="@string/StrTitle"
+        android:text="@string/StrMainTitle"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="70dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
     <Button
-        style="@style/ButtonText"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonPlayGame"
@@ -28,7 +28,7 @@
         android:layout_below="@id/textViewTitle"/>
 
     <Button
-        style="@style/ButtonText"
+        style="@style/SecondaryButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonPlayBest3"
@@ -38,7 +38,7 @@
         android:visibility="gone"/>
 
     <Button
-        style="@style/ButtonText"
+        style="@style/SecondaryButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonPlayBest5"
@@ -48,7 +48,7 @@
         android:visibility="gone"/>
 
     <Button
-        style="@style/ButtonText"
+        style="@style/SecondaryButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonPlayNormal"
@@ -58,7 +58,7 @@
         android:visibility="gone"/>
 
     <ImageButton
-        style="@style/ButtonText"
+        style="@style/ButtonStyle"
         android:id="@+id/imageButtonSettings"
         android:contentDescription="@string/StrSettingsBDescription"
         android:layout_width="70dp"
