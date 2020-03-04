@@ -7,16 +7,17 @@
     tools:context=".GameActivity">
 
     <LinearLayout
+        style="@style/LinearLayoutGameBoard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/colorBlack">
+        android:orientation="vertical">
 
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:background="@color/colorBlack">
 
             <TextView
@@ -30,8 +31,6 @@
                 android:textColor="@color/colorOrange"
                 android:textAlignment="center"
                 android:freezesText="true"/>
-
-
 
             <TextView
                 android:id="@+id/textViewPlayerTwo"
@@ -48,155 +47,119 @@
         </RelativeLayout>
 
         <LinearLayout
+            style="@style/LinearLayoutGameBoard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/colorBlack">
+            android:layout_weight="1">
 
             <ImageButton
+                style="@style/ImageButtonGameStyle"
                 android:id="@+id/imageButton00"
-                android:tag=""
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="centerInside"
-                android:layout_margin="5dp"
-                android:freezesText="true"
-                android:adjustViewBounds="true"
-                android:background="@drawable/fort_512px_white"/>
+                android:layout_weight="1"/>
 
             <ImageButton
+                style="@style/ImageButtonGameStyle"
                 android:id="@+id/imageButton01"
-                android:tag=""
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="centerInside"
-                android:layout_margin="5dp"
-                android:freezesText="true"
-                android:background="@drawable/fort_512px_white"/>
+                android:layout_weight="1"/>
 
             <ImageButton
+                style="@style/ImageButtonGameStyle"
                 android:id="@+id/imageButton02"
-                android:tag=""
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="centerInside"
-                android:layout_margin="5dp"
-                android:freezesText="true"
-                android:background="@drawable/fort_512px_white"/>
+                android:layout_weight="1"/>
         </LinearLayout>
 
         <LinearLayout
+            style="@style/LinearLayoutGameBoard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/colorBlack">
+            android:layout_weight="1">
 
             <ImageButton
+                style="@style/ImageButtonGameStyle"
                 android:id="@+id/imageButton10"
-                android:tag=""
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="centerInside"
-                android:layout_margin="5dp"
-                android:freezesText="true"
-                android:background="@drawable/fort_512px_white"/>
+                android:layout_weight="1"/>
 
             <ImageButton
+                style="@style/ImageButtonGameStyle"
                 android:id="@+id/imageButton11"
-                android:tag=""
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="centerInside"
-                android:layout_margin="5dp"
-                android:freezesText="true"
-                android:background="@drawable/fort_512px_white"/>
+                android:layout_weight="1"/>
 
             <ImageButton
+                style="@style/ImageButtonGameStyle"
                 android:id="@+id/imageButton12"
-                android:tag=""
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="centerInside"
-                android:layout_margin="5dp"
-                android:freezesText="true"
-                android:background="@drawable/fort_512px_white"/>
+                android:layout_weight="1"/>
         </LinearLayout>
 
         <LinearLayout
+            style="@style/LinearLayoutGameBoard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/colorBlack">
+            android:layout_weight="1">
 
             <ImageButton
+                style="@style/ImageButtonGameStyle"
                 android:id="@+id/imageButton20"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/fort_512px_white"
-                android:freezesText="true"
-                android:scaleType="centerInside"
-                android:tag="" />
+                android:layout_weight="1"/>
 
             <ImageButton
+                style="@style/ImageButtonGameStyle"
                 android:id="@+id/imageButton21"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/fort_512px_white"
-                android:freezesText="true"
-                android:scaleType="centerInside"
-                android:tag="" />
+                android:layout_weight="1"/>
 
             <ImageButton
-                style="@style/ImageButtonGameBoard"
+                style="@style/ImageButtonGameStyle"
                 android:id="@+id/imageButton22"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:freezesText="true"
-                android:scaleType="centerInside"
-                android:tag="" />
+                android:layout_weight="1"/>
         </LinearLayout>
 
         <LinearLayout
+            style="@style/LinearLayoutGameBoard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="5dp">
 
             <Button
-                style="@style/ButtonStyle"
+                style="@style/SecondaryButtonStyle"
                 android:id="@+id/buttonResetGame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="20sp"
                 android:text="Reset Game"/>
 
             <Button
-                style="@style/ButtonStyle"
+                style="@style/SecondaryButtonStyle"
                 android:id="@+id/buttonMainMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="20sp"
                 android:text="Main Menu"/>
 
             <Button
-                style="@style/ButtonStyle"
+                style="@style/SecondaryButtonStyle"
                 android:id="@+id/buttonResetBoard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="20sp"
                 android:text="Reset Board"/>
 
         </LinearLayout>

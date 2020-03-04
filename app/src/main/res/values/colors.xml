@@ -12,6 +12,6 @@
     <color name="transparent">#0000</color>
     <color name="translucent">#BF000000</color>
     <color name="colorGrey">#808080</color>
-    <color name="colorDarkGrey">#A9A9A9</color>
+    <color name="colorDarkGrey">#404040</color>
     <color name="colorBlueIsh">#3F8E9B</color>
 </resources>
