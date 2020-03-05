@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TicTacToe_V7</string>
-    <string name="StrBestThree">Best of 3</string>
-    <string name="StrBestFive">Best of 5</string>
+    <string name="StrBestThree">Best of 3 </string>
+    <string name="StrBestFive">Best of 5 </string>
     <string name="StrNormalPlay">Just Play</string>
     <string name="StrPlay">Play</string>
     <string name="StrMainTitle">Tic Tac Toe</string>

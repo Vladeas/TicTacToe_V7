@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,19 +14,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static java.lang.Double.*;
-
 
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private Player playerOne = new Player("roman_helmet_512px_white", true);
+    private Player playerTwo = new Player("viking_helmet_512px_white", false);
+    private String iconPlayerOne = "R.drawable.roman_helmet_512px_white";
     private int boardLength = 3;
     private int moveCount, roundCountPlayerOne, roundCountPlayerTwo, playerOnePoints, playerTwoPoints;
     private boolean playerOneTurn = true;
     private TextView textViewPlayerOne;
     private TextView textViewPlayerTwo;
     private ImageButton[][] imageButtons = new ImageButton[boardLength][boardLength];
-    boolean popUpVisible = false;
+    private boolean popUpVisible = false;
 
     /*
         - initialize the Used Views (by Id)
