@@ -14,37 +14,34 @@
 
 
 
-        <RelativeLayout
+        <LinearLayout
+            style="@style/LinearLayoutGameBoard"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:background="@color/colorBlack">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <TextView
+                style="@style/TextViewScoreBoard"
                 android:id="@+id/textViewPlayerOne"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Player 1\n0"
-                android:paddingTop="10dp"
-                android:paddingLeft="20dp"
-                android:textSize="30sp"
-                android:textColor="@color/colorOrange"
-                android:textAlignment="center"
-                android:freezesText="true"/>
+                android:text="Player 1\n0"/>
+
+            <ImageView
+                android:id="@+id/imageViewPlayerTurn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="center"
+                android:background="@drawable/roman_helmet_512px_white" />
 
             <TextView
                 android:id="@+id/textViewPlayerTwo"
+                style="@style/TextViewScoreBoard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="Player 2\n0"
-                android:paddingTop="10dp"
-                android:paddingRight="20dp"
-                android:textSize="30sp"
-                android:textColor="@color/colorOrange"
-                android:textAlignment="center"
-                android:freezesText="true"/>
-        </RelativeLayout>
+                android:text="Player 2\n0" />
+        </LinearLayout>
 
         <LinearLayout
             style="@style/LinearLayoutGameBoard"
@@ -168,10 +165,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/linearLayoutEndGamePopUp"
+        android:id="@+id/relativeLayoutEndGamePopUp"
         android:visibility="invisible"
         android:layout_centerInParent="true"
-        android:background="@color/translucent">
+        android:background="@color/translucent65percent">
 
         <!--
         <ImageView
@@ -182,14 +179,14 @@
             -->
 
         <TextView
+            style="@style/TitleText"
+            android:id="@+id/textViewEndGame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewEndGame"
-            android:textSize="50sp"
-            android:textColor="@color/colorOrange"
             android:layout_centerInParent="true"/>
 
         <Button
+            style="@style/ButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewEndGame"
@@ -199,6 +196,7 @@
             android:textSize="30sp"/>
 
         <Button
+            style="@style/ButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/buttonPlayAgainEnd"

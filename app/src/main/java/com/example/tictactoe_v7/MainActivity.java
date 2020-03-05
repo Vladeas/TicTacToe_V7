@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private final static int three = 3, five = 5, unDefined = 0;
+    private final static String three = "3", five = "5", unDefined = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

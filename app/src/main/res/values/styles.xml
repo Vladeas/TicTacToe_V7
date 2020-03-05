@@ -36,10 +36,18 @@
         <item name="android:colorBackground">@color/colorBlack</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:tag">""</item>
+        <item name="android:scaleType">centerInside</item>
     </style>
 
     <style name="LinearLayoutGameBoard" parent="TextAppearance.AppCompat">
-        <item name="android:background">@color/colorDarkGrey</item>
+        <item name="android:background">@color/colorBlack</item>
+    </style>
+
+    <style name="TextViewScoreBoard" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorBlueIsh</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:padding">10dp</item>
     </style>
 
 </resources>
