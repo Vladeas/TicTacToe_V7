@@ -13,7 +13,6 @@
         android:orientation="vertical">
 
 
-
         <LinearLayout
             style="@style/LinearLayoutGameBoard"
             android:layout_width="match_parent"
@@ -25,7 +24,7 @@
                 android:id="@+id/textViewPlayerOne"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Player 1\n0"/>
+                android:text="@string/StrScorePlayerOne"/>
 
             <ImageView
                 android:id="@+id/imageViewPlayerTurn"
@@ -40,7 +39,7 @@
                 style="@style/TextViewScoreBoard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Player 2\n0" />
+                android:text="@string/StrScorePlayerTwo" />
         </LinearLayout>
 
         <LinearLayout
@@ -141,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Reset Game"/>
+                android:text="@string/StrResetGame"/>
 
             <Button
                 style="@style/SecondaryButtonStyle"
@@ -149,7 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Main Menu"/>
+                android:text="@string/StrGoMainMenu"/>
 
             <Button
                 style="@style/SecondaryButtonStyle"
@@ -157,7 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Reset Board"/>
+                android:text="@string/StrResetBoard"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -192,7 +191,7 @@
             android:layout_below="@+id/textViewEndGame"
             android:layout_centerHorizontal="true"
             android:id="@+id/buttonPlayAgainEnd"
-            android:text="Play again"
+            android:text="@string/StrPlayAgain"
             android:textSize="30sp"/>
 
         <Button
@@ -202,7 +201,7 @@
             android:layout_below="@+id/buttonPlayAgainEnd"
             android:layout_centerHorizontal="true"
             android:id="@+id/buttonGoMainMenuEnd"
-            android:text="Main Menu"
+            android:text="@string/StrGoMainMenu"
             android:textSize="30sp"/>
 
     </RelativeLayout>

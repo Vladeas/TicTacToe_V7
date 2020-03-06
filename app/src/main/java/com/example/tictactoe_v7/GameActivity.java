@@ -18,10 +18,11 @@ import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Player playerOne = new Player("roman_helmet_512px_white", true);
-    private Player playerTwo = new Player("viking_helmet_512px_white", false);
+    private Player playerOne = new Player("Player One","roman_helmet_512px_white", true);
+    private Player playerTwo = new Player("Player Two","viking_helmet_512px_grey", false);
     private String standardIcons = "fort_512px_white";
     private int boardLength = 3;
+    private Double gameType;
     private int moveCount, roundCountPlayerOne, roundCountPlayerTwo, playerOnePoints, playerTwoPoints;
     private boolean playerOneTurn = true;
     private TextView textViewPlayerOne;
@@ -40,12 +41,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_game);
 
-
+        getGameType();
         configureTextViewsScore();
         configureButtons();
-
     }
 
+    private void getGameType(){
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+            try {
+                gameType = Double.parseDouble(extras.getString("Extra_Game_Type")); //The key argument here must match the one used in the other activity
+            } catch (NullPointerException e) {
+                Log.i("Error", "NullPointerException");
+            }
+    }
 
     private void configureTextViewsScore(){
         textViewPlayerOne = findViewById(R.id.textViewPlayerOne);
@@ -93,14 +102,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     }
                     if (playerOneTurn) {
-                        int resID = getResources().getIdentifier(playerOne.getIcon() , "drawable", getPackageName());// to see
-                        (v).setBackgroundResource(resID);
-                        (v).setTag("x");
-                        setPlayerTurnIcon("PlayerOne");
+                        updateMoveOnGameActivity(v,playerOne,"x");
+                        setPlayerTurnIcon(playerOne);
                     } else {
-                        (v).setBackgroundResource(R.drawable.viking_helmet_512px_grey);
-                        (v).setTag("o");
-                        setPlayerTurnIcon("PlayerTwo");
+                        updateMoveOnGameActivity(v,playerTwo,"o");
+                        setPlayerTurnIcon(playerTwo);
                     }
                     moveCount++;
                     winConditionsConfiguration();
@@ -114,73 +120,57 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void setPlayerTurnIcon(String player){
-        ImageView imageViewPlayerTurn = findViewById(R.id.imageViewPlayerTurn);
-        if(!player.equals("PlayerOne"))
-            imageViewPlayerTurn.setBackgroundResource(R.drawable.roman_helmet_512px_white);
-        else
-            imageViewPlayerTurn.setBackgroundResource(R.drawable.viking_helmet_512px_grey);
+    private void updateMoveOnGameActivity(View v, Player player, String tag){
+        int resID = getResources().getIdentifier(player.getIcon() , "drawable", getPackageName());// to see
+        (v).setBackgroundResource(resID);
+        (v).setTag(tag);
     }
+
+    private void setPlayerTurnIcon(Player player){
+        ImageView imageViewPlayerTurn = findViewById(R.id.imageViewPlayerTurn);
+        int resID = getResources().getIdentifier(player.getIcon() , "drawable", getPackageName());
+        imageViewPlayerTurn.setBackgroundResource(resID);
+    }
+
+    private void displayToastMessage(String message){ toastMessage(message);}
 
 
     private void winConditionsConfiguration(){
         if (checkForWin()) {
             if (playerOneTurn) {
-                playerOnePoints++;
-                roundCountPlayerOne++;
-                toastMessage("Player One Wins !");
-                if(!gameEnd()) {
-                    configureButtonResetBoard();
-                }
+                updatePlayerStats(playerOne);
             } else {
-                playerTwoPoints++;
-                roundCountPlayerTwo++;
-                toastMessage("Player Two Wins !");
-                if(!gameEnd()) {
-                    configureButtonResetBoard();
-                }
+                updatePlayerStats(playerTwo);
             }
         } else if (moveCount == 9) {
-            toastMessage("Draw !");
+            displayToastMessage("The match was a Draw !");
             configureButtonResetBoard();
         } else {
             playerOneTurn = !playerOneTurn;
         }
+        checkEndMatchConditions(playerOne);
+        checkEndMatchConditions(playerTwo);
         updatePointsText();
-        gameEnd();
+    }
+
+    private void updatePlayerStats(Player player){
+        player.incrementNrOfWins();
+        player.incrementMoveCount();
+        displayToastMessage(player.getName() + " Wins !");
     }
 
 
-    private boolean gameEnd(){
-        Double gameLength = 0.;
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            try {
-                gameLength = Double.parseDouble(extras.getString("Extra_Game_Type")); //The key argument here must match the one used in the other activity
-            } catch(NullPointerException e) {
-                Log.i("Error", "NullPointerException");
-            }
-
-            if(gameLength != 0) {
-                if (roundCountPlayerOne >= Math.ceil(gameLength / 2.0)) {
-                    setEndGameWindowVisibility(true);
-                    playerEndGameWin(1);
-                    return true;
-                } else if (roundCountPlayerTwo >= Math.ceil(gameLength / 2.0)) {
-                    setEndGameWindowVisibility(true);
-                    playerEndGameWin(2);
-                    return true;
-                }
-            }
+    private void checkEndMatchConditions(Player player){
+        if(gameType != 0 && player.getNrOfWins() >= Math.ceil(gameType / 2.0)) {
+            setEndGameWindowVisibility(true);
+            playerEndGameWin(player.getName());
         }
-        return false;
-
     }
 
 
-    private void playerEndGameWin(int player){
+    private void playerEndGameWin(String player){
         TextView textViewEndGame = findViewById(R.id.textViewEndGame);
-        String message = "Player " + player + " won!";
+        String message = player + " won!";
         textViewEndGame.setText(message);
     }
 
@@ -243,7 +233,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         moveCount = 0;
         playerOneTurn = true;
-        setPlayerTurnIcon("PlayerTwo");
+        setPlayerTurnIcon(playerTwo);
     }
 
     private void configureButtonResetScore(){ //Reset the score, works when the reset game is pressed

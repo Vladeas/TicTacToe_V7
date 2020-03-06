@@ -8,4 +8,10 @@
     <string name="StrSettingsBDescription">Go to settings activity</string>
     <string name="StrSettingsTitle">Settings</string>
     <string name="StrGoBack">Back</string>
+    <string name="StrPlayAgain">Play again</string>
+    <string name="StrGoMainMenu">Main Menu</string>
+    <string name="StrResetBoard">Reset Board</string>
+    <string name="StrResetGame">Reset Game</string>
+    <string name="StrScorePlayerOne">Player 1\n0</string>
+    <string name="StrScorePlayerTwo">Player 2\n0</string>
 </resources>
