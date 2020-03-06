@@ -20,7 +20,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private Player playerOne = new Player("roman_helmet_512px_white", true);
     private Player playerTwo = new Player("viking_helmet_512px_white", false);
-    private String iconPlayerOne = "R.drawable.roman_helmet_512px_white";
+    private String standardIcons = "fort_512px_white";
     private int boardLength = 3;
     private int moveCount, roundCountPlayerOne, roundCountPlayerTwo, playerOnePoints, playerTwoPoints;
     private boolean playerOneTurn = true;
@@ -93,7 +93,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     }
                     if (playerOneTurn) {
-                        (v).setBackgroundResource(R.drawable.roman_helmet_512px_white);
+                        int resID = getResources().getIdentifier(playerOne.getIcon() , "drawable", getPackageName());// to see
+                        (v).setBackgroundResource(resID);
                         (v).setTag("x");
                         setPlayerTurnIcon("PlayerOne");
                     } else {
@@ -118,7 +119,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if(!player.equals("PlayerOne"))
             imageViewPlayerTurn.setBackgroundResource(R.drawable.roman_helmet_512px_white);
         else
-            imageViewPlayerTurn.setBackgroundResource(R.drawable.viking_helmet_512px_white);
+            imageViewPlayerTurn.setBackgroundResource(R.drawable.viking_helmet_512px_grey);
     }
 
 
@@ -141,6 +142,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         } else if (moveCount == 9) {
             toastMessage("Draw !");
+            configureButtonResetBoard();
         } else {
             playerOneTurn = !playerOneTurn;
         }
@@ -229,14 +231,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void toastMessage(String message){ // show a toast message with the outcome of the round
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
-        configureButtonResetBoard();
     }
 
     private void configureButtonResetBoard(){
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 imageButtons[i][j].setTag("");
-                imageButtons[i][j].setBackgroundResource(R.drawable.fort_512px_white);
+                int resID = getResources().getIdentifier(standardIcons , "drawable", getPackageName());
+                imageButtons[i][j].setBackgroundResource(resID);
             }
         }
         moveCount = 0;
