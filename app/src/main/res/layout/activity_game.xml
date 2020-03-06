@@ -28,10 +28,10 @@
 
             <ImageView
                 android:id="@+id/imageViewPlayerTurn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:scaleType="center"
+                android:scaleType="fitStart"
                 android:background="@drawable/roman_helmet_512px_white" />
 
             <TextView
@@ -169,26 +169,36 @@
         android:layout_centerInParent="true"
         android:background="@color/translucent65percent">
 
-        <!--
-        <ImageView
+
+        <RelativeLayout
+            android:id="@+id/upperRealtiveLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerInside"
-            android:src="@drawable/shield"/>
-            -->
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp">
 
-        <TextView
-            style="@style/TitleText"
-            android:id="@+id/textViewEndGame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            <ImageView
+                android:id="@+id/imageViewWinningBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                android:src="@drawable/shield_512px_grey_v2"/>
+
+
+            <TextView
+                style="@style/TitleText"
+                android:id="@+id/textViewEndGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
 
         <Button
             style="@style/ButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewEndGame"
+            android:layout_below="@+id/upperRealtiveLayout"
             android:layout_centerHorizontal="true"
             android:id="@+id/buttonPlayAgainEnd"
             android:text="@string/StrPlayAgain"

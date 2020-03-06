@@ -1,19 +1,23 @@
 package com.example.tictactoe_v7;
 
+import android.widget.TextView;
+
 public class Player {
     private String name, icon;
-    private boolean playerTurn;
-    private int moveCount, nrOfWins;
+    private int nrOfWins;
+    private TextView textViewScoreBoard;
 
-    public Player(){ /* no arg constr */}
+    public Player(){ /* no arg constructor */}
 
-    public Player(String name, String icon, boolean playerTurn){
+    public Player(String name, String icon){
         this.name = name;
         this.icon = icon;
-        this.playerTurn = playerTurn;
-        this.moveCount = 0;
         this.nrOfWins = 0;
     }
+
+    public TextView getTextViewScoreBoard() {return this.textViewScoreBoard; }
+
+    public void setTextViewScoreBoard(TextView textViewScoreBoard) {this.textViewScoreBoard = textViewScoreBoard; }
 
     public String getName() { return this.name; }
 
@@ -21,19 +25,11 @@ public class Player {
         return this.icon;
     }
 
-    public boolean getPlayerTurn(){
-        return this.playerTurn;
-    }
-
-    public int getMoveCount(){
-        return this.moveCount;
-    }
-
-    public void incrementMoveCount() { this.moveCount++; }
-
     public int getNrOfWins(){
         return this.nrOfWins;
     }
 
     public void incrementNrOfWins() { this.nrOfWins++; }
+
+    public void resetNrOfWins() { this.nrOfWins = 0; }
 }
