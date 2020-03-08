@@ -12,14 +12,19 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="TextEntity" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 
-    <style name="TitleText" parent="TextAppearance.AppCompat">
+
+    <style name="TitleText" parent="TextEntity">
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textSize">60sp</item>
     </style>
 
 
-    <style name="ButtonStyle" parent="TextAppearance.AppCompat">
+    <style name="ButtonStyle" parent="TextEntity">
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textSize">40sp</item>
         <item name="android:background">@drawable/rounded_button</item>
@@ -43,10 +48,9 @@
         <item name="android:background">@color/colorBlack</item>
     </style>
 
-    <style name="TextViewScoreBoard" parent="TextAppearance.AppCompat">
+    <style name="TextViewScoreBoard" parent="TextEntity">
         <item name="android:textColor">@color/colorBlueIsh</item>
         <item name="android:textSize">30sp</item>
-        <item name="android:textAlignment">center</item>
         <item name="android:padding">10dp</item>
     </style>
 

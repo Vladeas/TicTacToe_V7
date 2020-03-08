@@ -18,14 +18,13 @@ import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Player playerOne = new Player("roman_helmet_512px_white", true);
-    private Player playerTwo = new Player("viking_helmet_512px_white", false);
-    private String iconPlayerOne = "R.drawable.roman_helmet_512px_white";
+    private Player playerOne = new Player("Player 1","roman_helmet_512px_white");
+    private Player playerTwo = new Player("Player 2","viking_helmet_512px_grey");
+    private String standardIcons = "fort_512px_white";
     private int boardLength = 3;
-    private int moveCount, roundCountPlayerOne, roundCountPlayerTwo, playerOnePoints, playerTwoPoints;
+    private Double gameType;
+    private int moveCount;
     private boolean playerOneTurn = true;
-    private TextView textViewPlayerOne;
-    private TextView textViewPlayerTwo;
     private ImageButton[][] imageButtons = new ImageButton[boardLength][boardLength];
     private boolean popUpVisible = false;
 
@@ -40,19 +39,29 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_game);
 
-
-        configureTextViewsScore();
+        getGameType();
+        setPlayerScoreTextView();
         configureButtons();
-
     }
 
-
-    private void configureTextViewsScore(){
-        textViewPlayerOne = findViewById(R.id.textViewPlayerOne);
-        textViewPlayerTwo = findViewById(R.id.textViewPlayerTwo);
+    private void getGameType(){ // Best of 3, of 5, or countless
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+            try {
+                gameType = Double.parseDouble(extras.getString("Extra_Game_Type")); //The key argument here must match the one used in the other activity
+            } catch (NullPointerException e) {
+                Log.i("Error", "NullPointerException");
+            }
     }
 
-    private void configureButtons(){
+    private void setPlayerScoreTextView(){ //save each player Object with its according TextView (for score)
+        TextView textView = findViewById(R.id.textViewPlayerOne);
+        playerOne.setTextViewScoreBoard(textView);
+        textView = findViewById(R.id.textViewPlayerTwo);
+        playerTwo.setTextViewScoreBoard(textView);
+    }
+
+    private void configureButtons(){ // use findViewById & setOnClickListener's for the buttons
         Button buttonMainMenu = findViewById(R.id.buttonMainMenu);
         Button buttonResetGame = findViewById(R.id.buttonResetGame);
         Button buttonResetBoard = findViewById(R.id.buttonResetBoard);
@@ -76,7 +85,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v){
+    public void onClick(View v){ // call each button method when button is pressed
         if(!popUpVisible) { // Buttons only accessible if the Game won window is not visible
             switch (v.getId()) {
                 case R.id.buttonMainMenu:
@@ -93,16 +102,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     }
                     if (playerOneTurn) {
-                        (v).setBackgroundResource(R.drawable.roman_helmet_512px_white);
-                        (v).setTag("x");
-                        setPlayerTurnIcon("PlayerOne");
+                        updateOccupiedPositions(v,playerOne,"x");
+                        setPlayerTurnIcon(playerTwo);
                     } else {
-                        (v).setBackgroundResource(R.drawable.viking_helmet_512px_grey);
-                        (v).setTag("o");
-                        setPlayerTurnIcon("PlayerTwo");
+                        updateOccupiedPositions(v,playerTwo,"o");
+                        setPlayerTurnIcon(playerOne);
                     }
                     moveCount++;
-                    winConditionsConfiguration();
+                    playerMoveCheck();
                     break;
             }
         } else {// Buttons only accessible if the Game won window is visible
@@ -113,77 +120,107 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void setPlayerTurnIcon(String player){
-        ImageView imageViewPlayerTurn = findViewById(R.id.imageViewPlayerTurn);
-        if(!player.equals("PlayerOne"))
-            imageViewPlayerTurn.setBackgroundResource(R.drawable.roman_helmet_512px_white);
-        else
-            imageViewPlayerTurn.setBackgroundResource(R.drawable.viking_helmet_512px_white);
+    private void updateOccupiedPositions(View v, Player player, String tag){ // If a position is chosen update its Icon and Tag
+        int resID = getResources().getIdentifier(player.getIcon() , "drawable", getPackageName());// to see
+        (v).setBackgroundResource(resID);
+        (v).setTag(tag);
     }
 
+    private void setPlayerTurnIcon(Player player){ // Show the Icon for which players turn it is
+        ImageView imageViewPlayerTurn = findViewById(R.id.imageViewPlayerTurn);
+        int resID = getResources().getIdentifier(player.getIcon() , "drawable", getPackageName());
+        imageViewPlayerTurn.setBackgroundResource(resID);
+    }
 
-    private void winConditionsConfiguration(){
+    private void displayToastMessage(String message){ Toast.makeText(this,message,Toast.LENGTH_SHORT).show(); }// Show a Toast
+
+
+    private void playerMoveCheck(){// Check the move a player made & check for win
         if (checkForWin()) {
             if (playerOneTurn) {
-                playerOnePoints++;
-                roundCountPlayerOne++;
-                toastMessage("Player One Wins !");
-                if(!gameEnd()) {
+                updatePlayerStats(playerOne);
+                if(!checkMatchWinConditions(playerOne))
                     configureButtonResetBoard();
-                }
             } else {
-                playerTwoPoints++;
-                roundCountPlayerTwo++;
-                toastMessage("Player Two Wins !");
-                if(!gameEnd()) {
+                updatePlayerStats(playerTwo);
+                if(!checkMatchWinConditions(playerTwo))
                     configureButtonResetBoard();
-                }
             }
         } else if (moveCount == 9) {
-            toastMessage("Draw !");
+            displayToastMessage("The match was a Draw !");
+            configureButtonResetBoard();
         } else {
-            playerOneTurn = !playerOneTurn;
+            playerOneTurn = !playerOneTurn;// if the game does not end switch player turn
         }
-        updatePointsText();
-        gameEnd();
+        //configureButtonResetBoard();
+        updatePointsText(playerOne);
+        updatePointsText(playerTwo);
+    }
+
+    private void updatePlayerStats(Player player){ // Increment Nr of wins and the Nr of moves
+        player.incrementNrOfWins();
+        displayToastMessage(player.getName() + " Wins !");
     }
 
 
-    private boolean gameEnd(){
-        Double gameLength = 0.;
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            try {
-                gameLength = Double.parseDouble(extras.getString("Extra_Game_Type")); //The key argument here must match the one used in the other activity
-            } catch(NullPointerException e) {
-                Log.i("Error", "NullPointerException");
-            }
-
-            if(gameLength != 0) {
-                if (roundCountPlayerOne >= Math.ceil(gameLength / 2.0)) {
-                    setEndGameWindowVisibility(true);
-                    playerEndGameWin(1);
-                    return true;
-                } else if (roundCountPlayerTwo >= Math.ceil(gameLength / 2.0)) {
-                    setEndGameWindowVisibility(true);
-                    playerEndGameWin(2);
-                    return true;
-                }
-            }
+    private boolean checkMatchWinConditions(Player player){ //Match (contains more games) & make the end game window visible
+        if(gameType != 0 && player.getNrOfWins() >= Math.ceil(gameType / 2.0)) { // Who won the most of "gameType" matches
+            setEndMatchWindowVisibility(true);
+            setMatchWinningPlayerName(player.getName());
+            return true;
         }
         return false;
-
     }
 
 
-    private void playerEndGameWin(int player){
+    private void setMatchWinningPlayerName(String player){ // Update the end game TextView with the winning player
         TextView textViewEndGame = findViewById(R.id.textViewEndGame);
-        String message = "Player " + player + " won!";
+        String message = player + " won!";
         textViewEndGame.setText(message);
     }
 
+    private void configureButtonResetBoard(){ // Reset the playing board
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                imageButtons[i][j].setTag("");
+                int resID = getResources().getIdentifier(standardIcons , "drawable", getPackageName());
+                imageButtons[i][j].setBackgroundResource(resID);
+            }
+        }
+        moveCount = 0;
+        playerOneTurn = true;
+        setPlayerTurnIcon(playerOne);
+    }
 
-    public boolean checkForWin(){
+    private void configureButtonResetScore(){ //Reset the score & the board, works when the reset game is pressed
+        setEndMatchWindowVisibility(false);
+        configureButtonResetBoard();
+        playerOne.resetNrOfWins();
+        playerTwo.resetNrOfWins();
+        updatePointsText(playerOne);
+        updatePointsText(playerTwo);
+    }
+
+    private void updatePointsText(Player player){ // Update textView with the present score
+        String playerScore = player.getName() + "\n" + player.getNrOfWins();
+        player.getTextViewScoreBoard().setText(playerScore);
+    }
+
+    private void setEndMatchWindowVisibility(boolean value){ // Make the end Match window visible or not
+        RelativeLayout linearLayoutEndGamePopUp = findViewById(R.id.relativeLayoutEndGamePopUp);
+        if(value){
+            popUpVisible = true;
+            linearLayoutEndGamePopUp.setVisibility(View.VISIBLE);
+        } else {
+            popUpVisible = false;
+            linearLayoutEndGamePopUp.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+
+
+    public boolean checkForWin(){ // check if there is an uninterrupted line of three identical symbols (excepting the standard one)
         String[][] field = new String[boardLength][boardLength];
 
         for (int i = 0; i < boardLength;i++){
@@ -225,49 +262,5 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         return false;
-    }
-
-    private void toastMessage(String message){ // show a toast message with the outcome of the round
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
-        configureButtonResetBoard();
-    }
-
-    private void configureButtonResetBoard(){
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                imageButtons[i][j].setTag("");
-                imageButtons[i][j].setBackgroundResource(R.drawable.fort_512px_white);
-            }
-        }
-        moveCount = 0;
-        playerOneTurn = true;
-        setPlayerTurnIcon("PlayerTwo");
-    }
-
-    private void configureButtonResetScore(){ //Reset the score, works when the reset game is pressed
-        setEndGameWindowVisibility(false);
-        configureButtonResetBoard();
-        roundCountPlayerOne = 0;
-        roundCountPlayerTwo = 0;
-        playerOnePoints = 0;
-        playerTwoPoints = 0;
-        updatePointsText();
-    }
-
-    private void updatePointsText(){ // Update textView with the present score
-        String playerOneScore = "Player 1\n" + playerOnePoints, playerTwoScore = "Player 2\n" + playerTwoPoints;
-        textViewPlayerOne.setText(playerOneScore);
-        textViewPlayerTwo.setText(playerTwoScore);
-    }
-
-    private void setEndGameWindowVisibility(boolean value){
-        RelativeLayout linearLayoutEndGamePopUp = findViewById(R.id.relativeLayoutEndGamePopUp);
-        if(value){
-            popUpVisible = true;
-            linearLayoutEndGamePopUp.setVisibility(View.VISIBLE);
-        } else {
-            popUpVisible = false;
-            linearLayoutEndGamePopUp.setVisibility(View.INVISIBLE);
-        }
     }
 }
