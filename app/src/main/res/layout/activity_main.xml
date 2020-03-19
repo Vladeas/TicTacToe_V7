@@ -8,15 +8,16 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/textViewTitle"
         style="@style/TitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewTitle"
-        android:text="@string/StrMainTitle"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="70dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:fontFamily="@font/medievalsharp_regular"
+        android:text="@string/StrMainTitle" />
 
     <Button
         style="@style/ButtonStyle"

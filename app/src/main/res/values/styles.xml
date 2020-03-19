@@ -15,6 +15,7 @@
     <style name="TextEntity" parent="TextAppearance.AppCompat">
         <item name="android:textStyle">bold</item>
         <item name="android:textAlignment">center</item>
+        <item name="android:fontFamily">@font/medievalsharp_regular</item>
     </style>
 
 
@@ -50,7 +51,7 @@
 
     <style name="TextViewScoreBoard" parent="TextEntity">
         <item name="android:textColor">@color/colorBlueIsh</item>
-        <item name="android:textSize">30dp</item>
+        <item name="android:textSize">25dp</item>
         <item name="android:padding">10dp</item>
     </style>
 

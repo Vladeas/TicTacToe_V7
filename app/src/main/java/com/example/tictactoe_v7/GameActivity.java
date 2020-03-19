@@ -3,6 +3,7 @@ package com.example.tictactoe_v7;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -20,7 +21,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Player playerOne = new Player("Player 1","roman_helmet_512px_white");
     private Player playerTwo = new Player("Player 2","viking_helmet_512px_grey");
     private String standardIcons = "fort_512px_white", unoccupiedString = "unoccupied", playerOneTag = "playerOneHere", playerTwoTag = "playerTwoHere", drawMessage = "The match was a Draw !";
-    private int boardLength = 3, moveCount;
+    private int boardLength = 3, moveCount, delayTimeMS = 1500;
     private Double gameType;
     private boolean playerOneTurn = true, freezeUI = false, freezeGameBoard = false;
     private ImageButton[][] imageButtons = new ImageButton[boardLength][boardLength];
@@ -138,15 +139,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // Update the end game TextView with the winning player
     private void setMatchWinningPlayerName(String player){
         TextView textViewEndGame = findViewById(R.id.textViewEndGame);
-        String message = player + " won!";
+        String message = player + "\nwon!";
         textViewEndGame.setText(message);
     }
-    // Make the end Match window visible or not
+    // Make the end Match window visible or not also use a delay
     private void setEndMatchWindowVisibility(boolean value){
-        RelativeLayout linearLayoutEndGamePopUp = findViewById(R.id.relativeLayoutEndGamePopUp);
+        final RelativeLayout linearLayoutEndGamePopUp = findViewById(R.id.relativeLayoutEndGamePopUp);
         if(value){
             freezeUI = true;
-            linearLayoutEndGamePopUp.setVisibility(View.VISIBLE);
+            new CountDownTimer(delayTimeMS, 1000) {
+                public void onFinish() {
+                    linearLayoutEndGamePopUp.setVisibility(View.VISIBLE);
+                }
+
+                public void onTick(long millisUntilFinished) {
+                }
+            }.start();
         } else {
             freezeUI = false;
             linearLayoutEndGamePopUp.setVisibility(View.INVISIBLE);
@@ -205,6 +213,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean checkForLineWin(String[][] field){
         for (int i = 0; i < boardLength;i++){
             if(field[i][0].equals(field[i][1]) && field[i][0].equals(field[i][2]) && !field[i][0].equals(unoccupiedString)){
+                winningFormationShowcase(i,0, i,1, i,2);
                 return true;
             }
         }
@@ -213,6 +222,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean checkForColumnWin(String[][] field){
         for (int i = 0; i < 3;i++){
             if(field[0][i].equals(field[1][i]) && field[0][i].equals(field[2][i]) && !field[0][i].equals(unoccupiedString)){
+                winningFormationShowcase(0, i, 1, i, 2, i);
                 return true;
             }
         }
@@ -220,17 +230,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
     private boolean checkForPrimaryDiagonalWin(String[][] field) {
         if(field[0][0].equals(field[1][1]) && field[0][0].equals(field[2][2]) && !field[0][0].equals(unoccupiedString)){
+            winningFormationShowcase(0, 0, 1, 1, 2, 2);
             return true;
         }
         return false;
     }
     private boolean checkForSecondaryDiagonalWin(String[][] field) {
         if(field[0][2].equals(field[1][1]) && field[0][2].equals(field[2][0]) && !field[0][2].equals(unoccupiedString)){
+            winningFormationShowcase(0, 2, 1, 1, 2, 0);
             return true;
         }
         return false;
     }
 
+    //the winning formation icons will turn to flames
+    private void winningFormationShowcase(int lineOne, int columnOne, int lineTwo, int columnTwo, int lineThree, int columnThree){
+        imageButtons[lineOne][columnOne].setBackgroundResource(R.drawable.flame_512px_red);
+        imageButtons[lineTwo][columnTwo].setBackgroundResource(R.drawable.flame_512px_red);
+        imageButtons[lineThree][columnThree].setBackgroundResource(R.drawable.flame_512px_red);
+    }
 
     // Best of 3, of 5, or countless
     private void getGameType(){
@@ -250,7 +268,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // Call the resetBoard method after a delay
     private void timedReset(){
         freezeGameBoard = true;
-        new CountDownTimer(3000, 1000) {
+        new CountDownTimer(delayTimeMS, 1000) {
             public void onFinish() {
                 freezeGameBoard = false;
                 configureButtonResetBoard();
