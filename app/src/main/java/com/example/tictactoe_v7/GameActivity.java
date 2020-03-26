@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -23,7 +24,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private String standardIcons = "fort_512px_white", unoccupiedString = "unoccupied", playerOneTag = "playerOneHere", playerTwoTag = "playerTwoHere", drawMessage = "The match was a Draw !";
     private int boardLength = 3, moveCount, delayTimeMS = 1500;
     private Double gameType;
-    private boolean playerOneTurn = true, freezeUI = false, freezeGameBoard = false;
+    private boolean playerOneTurn = true, freezeUI = false, freezeGameBoard = false, playerOneWonLastTurn;
     private ImageButton[][] imageButtons = new ImageButton[boardLength][boardLength];
 
 
@@ -71,18 +72,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if(!freezeUI) { // Buttons only accessible if the Game won window is not visible
             switch (v.getId()) {
                 case R.id.buttonMainMenu:
+                    buttonSoundMethod();
                     finish();
                     break;
                 case R.id.buttonResetGame:
+                    buttonSoundMethod();
                     configureButtonResetMatch();
                     break;
                 case R.id.buttonResetBoard:
+                    buttonSoundMethod();
                     configureButtonResetBoard();
                     break;
                 default:
                     if (!(v).getTag().toString().equals(unoccupiedString)) {
                         break;
                     } else if(!freezeGameBoard) {
+                        gameBoardSoundMethod();
                         if (playerOneTurn) {
                             updateOccupiedPositions(v, playerOne, playerOneTag);
                             setPlayerTurnIcon(playerTwo);
@@ -96,10 +101,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     break;
             }
         } else {// Buttons only accessible if the Game won window is visible
-            if (v.getId() == R.id.buttonGoMainMenuEnd)
+            if (v.getId() == R.id.buttonGoMainMenuEnd) {
+                buttonSoundMethod();
                 finish();
-            if(v.getId() == R.id.buttonPlayAgainEnd)
+            }
+            if(v.getId() == R.id.buttonPlayAgainEnd) {
+                buttonSoundMethod();
                 configureButtonResetMatch();
+            }
         }
     }
 
@@ -110,13 +119,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             if (playerOneTurn) {
                 updatePlayerStats(playerOne);
                 updatePointsText(playerOne);
-                if(!checkMatchWinConditions(playerOne))
+                if(!checkMatchWinConditions(playerOne)) {
+                    gameVictorySoundMethod();
+                    playerOneWonLastTurn = true;
                     timedReset();
+                }
             } else {
                 updatePlayerStats(playerTwo);
                 updatePointsText(playerTwo);
-                if(!checkMatchWinConditions(playerTwo))
+                if(!checkMatchWinConditions(playerTwo)) {
+                    gameVictorySoundMethod();
+                    playerOneWonLastTurn = false;
                     timedReset();
+                }
             }
         } else if (moveCount == 9) {
             displayToastMessage(drawMessage);
@@ -130,6 +145,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     //Match (contains more games) & make the end game window visible
     private boolean checkMatchWinConditions(Player player){
         if(gameType != 0 && player.getNrOfWins() >= Math.ceil(gameType / 2.0)) { // Who won the most of "gameType" matches
+            matchVictorySoundMethod();
             setEndMatchWindowVisibility(true);
             setMatchWinningPlayerName(player.getName());
             return true;
@@ -261,6 +277,27 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
     }
 
+    // Play the sound effect for choosing a position
+    private void gameBoardSoundMethod(){
+        MediaPlayer positionChoiceSound = MediaPlayer.create(this, R.raw.sword_scrape);
+        positionChoiceSound.start();
+    }
+    // Play the sound effect for pressing a button
+    private void buttonSoundMethod(){
+        MediaPlayer buttonSound = MediaPlayer.create(this, R.raw.swipe_sound_button);
+        buttonSound.start();
+    }
+    // Play the sound effect for winning a game
+    private void gameVictorySoundMethod(){
+        MediaPlayer gameVictorySound = MediaPlayer.create(this, R.raw.victory_shout);
+        gameVictorySound.start();
+    }
+    // Play the sound effect for winning a match
+    private void matchVictorySoundMethod(){
+        MediaPlayer matchVictorySound = MediaPlayer.create(this, R.raw.victory_music);
+        matchVictorySound.start();
+    }
+
     // Show a Toast
     private void displayToastMessage(String message){ Toast.makeText(this,message,Toast.LENGTH_SHORT).show(); }
 
@@ -288,12 +325,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         moveCount = 0;
-        playerOneTurn = true;
-        setPlayerTurnIcon(playerOne);
+        if(playerOneWonLastTurn) {
+            playerOneTurn = true;
+            setPlayerTurnIcon(playerOne);
+        }
+        else{
+            playerOneTurn = false;
+            setPlayerTurnIcon(playerTwo);
+        }
     }
     //Reset the score & the board, works when the reset game is pressed
     private void configureButtonResetMatch(){
         setEndMatchWindowVisibility(false);
+        playerOneWonLastTurn = false;
         configureButtonResetBoard();
         playerOne.resetNrOfWins();
         playerTwo.resetNrOfWins();

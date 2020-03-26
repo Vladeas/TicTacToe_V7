@@ -15,9 +15,10 @@ public class Player {
         this.nrOfWins = 0;
     }
 
-    public TextView getTextViewScoreBoard() {return this.textViewScoreBoard; }
 
-    public void setTextViewScoreBoard(TextView textViewScoreBoard) {this.textViewScoreBoard = textViewScoreBoard; }
+    public TextView getTextViewScoreBoard() { return this.textViewScoreBoard; }
+
+    public void setTextViewScoreBoard(TextView textViewScoreBoard) { this.textViewScoreBoard = textViewScoreBoard; }
 
     public String getName() { return this.name; }
 

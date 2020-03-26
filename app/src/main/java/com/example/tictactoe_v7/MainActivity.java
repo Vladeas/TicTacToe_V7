@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.ImageButton;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private final static String three = "3", five = "5", unDefined = "0";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v){ // call each button method when button is pressed
+        buttonSoundMethod();
         switch (v.getId()){
             case R.id.buttonPlayGame:
                 configurePlayButton();
@@ -87,13 +90,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(i);
     }
 
-
     private void configurePlayButton() { // show/hide play options
         buttonVisibility(findViewById(R.id.buttonPlayBest3));
         buttonVisibility(findViewById(R.id.buttonPlayBest5));
         buttonVisibility(findViewById(R.id.buttonPlayNormal));
     }
-
 
     private void buttonVisibility(View v){ //If The button is visible make it invisible and vice versa
         if(v.getVisibility() == View.VISIBLE) {
@@ -101,5 +102,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else{
             v.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void buttonSoundMethod(){
+        MediaPlayer buttonSound = MediaPlayer.create(this, R.raw.swipe_sound_button);
+        buttonSound.start();
     }
 }

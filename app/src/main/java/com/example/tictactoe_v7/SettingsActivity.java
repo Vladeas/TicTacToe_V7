@@ -3,6 +3,7 @@ package com.example.tictactoe_v7;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v){ // call each button method when button is pressed
+        buttonSoundMethod();
         switch (v.getId()){
             case R.id.buttonGoBack:
                 configureGoBackButton();
@@ -42,5 +44,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private void configureGoBackButton() //end the intent and return to the previous activity
     {
         finish();
+    }
+
+    private void buttonSoundMethod(){
+        MediaPlayer buttonSound = MediaPlayer.create(this, R.raw.swipe_sound_button);
+        buttonSound.start();
     }
 }
