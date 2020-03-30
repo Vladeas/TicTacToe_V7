@@ -24,6 +24,11 @@
         <item name="android:textSize">60dp</item>
     </style>
 
+    <style name="SecondaryTextTitle" parent="TextEntity">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">25dp</item>
+    </style>
+
 
     <style name="ButtonStyle" parent="TextEntity">
         <item name="android:textColor">@color/colorBlack</item>

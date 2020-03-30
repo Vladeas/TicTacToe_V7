@@ -22,9 +22,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Player playerOne = new Player("Player 1","roman_helmet_512px_white");
     private Player playerTwo = new Player("Player 2","viking_helmet_512px_grey");
     private String standardIcons = "fort_512px_white", unoccupiedString = "unoccupied", playerOneTag = "playerOneHere", playerTwoTag = "playerTwoHere", drawMessage = "The match was a Draw !";
-    private int boardLength = 3, moveCount, delayTimeMS = 1500;
+    private String areYouCertainString = "Are you certain that you want to ", lastCommand;
+    private int boardLength = 3, moveCount, delayTimeMS = 1500, freezeUI = 1;
     private Double gameType;
-    private boolean playerOneTurn = true, freezeUI = false, freezeGameBoard = false, playerOneWonLastTurn;
+    private boolean playerOneTurn = true, freezeGameBoard = false,  playerOneWonLastTurn;
     private ImageButton[][] imageButtons = new ImageButton[boardLength][boardLength];
 
 
@@ -48,6 +49,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Button buttonResetBoard = findViewById(R.id.buttonResetBoard);
         Button buttonMainMenuEnd = findViewById(R.id.buttonGoMainMenuEnd);
         Button buttonPlayAgainEnd = findViewById(R.id.buttonPlayAgainEnd);
+        Button buttonYes = findViewById(R.id.buttonYes);
+        Button buttonNo = findViewById(R.id.buttonNo);
 
 
         buttonMainMenu.setOnClickListener(this);
@@ -55,6 +58,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         buttonResetBoard.setOnClickListener(this);
         buttonMainMenuEnd.setOnClickListener(this);
         buttonPlayAgainEnd.setOnClickListener(this);
+        buttonYes.setOnClickListener(this);
+        buttonNo.setOnClickListener(this);
 
         for(int i = 0; i < boardLength;i++){ // setOnClickListener for all boardGame buttons
             for(int j = 0; j < boardLength;j++){
@@ -69,46 +74,72 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // call each button method when button is pressed
     @Override
     public void onClick(View v){
-        if(!freezeUI) { // Buttons only accessible if the Game won window is not visible
-            switch (v.getId()) {
-                case R.id.buttonMainMenu:
+        switch(freezeUI){
+            case 1:// Buttons only accessible if the overlay windows are not visible
+                switch (v.getId()) {
+                    case R.id.buttonMainMenu:
+                        buttonSoundMethod();
+                        configureButtonGoMainMenu();
+                        break;
+                    case R.id.buttonResetGame:
+                        buttonSoundMethod();
+                        configureButtonResetMatch();
+                        break;
+                    case R.id.buttonResetBoard:
+                        buttonSoundMethod();
+                        configureButtonResetBoard();
+                        break;
+                    default:
+                        if (!(v).getTag().toString().equals(unoccupiedString)) {
+                            break;
+                        } else if(!freezeGameBoard) {
+                            gameBoardSoundMethod();
+                            if (playerOneTurn) {
+                                updateOccupiedPositions(v, playerOne, playerOneTag);
+                                setPlayerTurnIcon(playerTwo);
+                            } else {
+                                updateOccupiedPositions(v, playerTwo, playerTwoTag);
+                                setPlayerTurnIcon(playerOne);
+                            }
+                            moveCount++;
+                            checkGameState();
+                        }
+                        break;
+                }
+                break;
+            case 2 :// Buttons only accessible if the Game won window is visible
+                if (v.getId() == R.id.buttonGoMainMenuEnd) {
                     buttonSoundMethod();
                     finish();
-                    break;
-                case R.id.buttonResetGame:
+                }
+                if(v.getId() == R.id.buttonPlayAgainEnd) {
                     buttonSoundMethod();
-                    configureButtonResetMatch();
-                    break;
-                case R.id.buttonResetBoard:
-                    buttonSoundMethod();
-                    configureButtonResetBoard();
-                    break;
-                default:
-                    if (!(v).getTag().toString().equals(unoccupiedString)) {
-                        break;
-                    } else if(!freezeGameBoard) {
-                        gameBoardSoundMethod();
-                        if (playerOneTurn) {
-                            updateOccupiedPositions(v, playerOne, playerOneTag);
-                            setPlayerTurnIcon(playerTwo);
-                        } else {
-                            updateOccupiedPositions(v, playerTwo, playerTwoTag);
-                            setPlayerTurnIcon(playerOne);
-                        }
-                        moveCount++;
-                        checkGameState();
+                    resetMatch();
+                }
+                break;
+            case 3: // Buttons only accessible if the Are You Certain window is visible
+                if(v.getId() == R.id.buttonYes) // continue with the intended action
+                    switch (lastCommand){
+                        case "resetBoard":
+                            configureAreYouCertainView(false,"");
+                            resetBoard();
+                            break;
+                        case "resetMatch":
+                            configureAreYouCertainView(false,"");
+                            resetMatch();
+                            break;
+                        case "goMainMenu":
+                            configureAreYouCertainView(false,"");
+                            finish();
+                            break;
+                        default:
+                            break;
                     }
-                    break;
-            }
-        } else {// Buttons only accessible if the Game won window is visible
-            if (v.getId() == R.id.buttonGoMainMenuEnd) {
-                buttonSoundMethod();
-                finish();
-            }
-            if(v.getId() == R.id.buttonPlayAgainEnd) {
-                buttonSoundMethod();
-                configureButtonResetMatch();
-            }
+                else if(v.getId() == R.id.buttonNo) // do not continue
+                    configureAreYouCertainView(false,"");
+                break;
+            default:
+                break;
         }
     }
 
@@ -162,7 +193,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private void setEndMatchWindowVisibility(boolean value){
         final RelativeLayout linearLayoutEndGamePopUp = findViewById(R.id.relativeLayoutEndGamePopUp);
         if(value){
-            freezeUI = true;
+            freezeUI = 2;
             new CountDownTimer(delayTimeMS, 1000) {
                 public void onFinish() {
                     linearLayoutEndGamePopUp.setVisibility(View.VISIBLE);
@@ -172,7 +203,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }.start();
         } else {
-            freezeUI = false;
+            freezeUI = 1;
             linearLayoutEndGamePopUp.setVisibility(View.INVISIBLE);
         }
     }
@@ -302,13 +333,26 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private void displayToastMessage(String message){ Toast.makeText(this,message,Toast.LENGTH_SHORT).show(); }
 
 
+    private void configureButtonResetBoard(){
+        configureAreYouCertainView(true, "reset the board ?");
+        lastCommand = "resetBoard";
+    }
+    private void configureButtonResetMatch(){
+        configureAreYouCertainView(true, "reset the game ?");
+        lastCommand = "resetMatch";
+    }
+    private void configureButtonGoMainMenu(){
+        configureAreYouCertainView(true, "go back to the menu ?");
+        lastCommand = "goMainMenu";
+    }
+
     // Call the resetBoard method after a delay
     private void timedReset(){
         freezeGameBoard = true;
         new CountDownTimer(delayTimeMS, 1000) {
             public void onFinish() {
                 freezeGameBoard = false;
-                configureButtonResetBoard();
+                resetBoard();
             }
 
             public void onTick(long millisUntilFinished) {
@@ -316,7 +360,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }.start();
     }
     // Reset the playing board
-    private void configureButtonResetBoard(){
+    private void resetBoard(){
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 imageButtons[i][j].setTag(unoccupiedString);
@@ -335,13 +379,27 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     //Reset the score & the board, works when the reset game is pressed
-    private void configureButtonResetMatch(){
+    private void resetMatch(){
         setEndMatchWindowVisibility(false);
         playerOneWonLastTurn = false;
-        configureButtonResetBoard();
+        resetBoard();
         playerOne.resetNrOfWins();
         playerTwo.resetNrOfWins();
         updatePointsText(playerOne);
         updatePointsText(playerTwo);
+    }
+
+    private void configureAreYouCertainView(boolean value, String message){
+        TextView textViewAreYouCertain = findViewById(R.id.textViewAreYouCertain);
+        textViewAreYouCertain.setText(areYouCertainString + message);
+
+        RelativeLayout linearLayoutAreYouCertainPopUp= findViewById(R.id.relativeLayoutAreYouCertain);
+        if(value){
+            freezeUI = 3;
+            linearLayoutAreYouCertainPopUp.setVisibility(View.VISIBLE);
+        } else {
+            freezeUI = 1;
+            linearLayoutAreYouCertainPopUp.setVisibility(View.INVISIBLE);
+        }
     }
 }

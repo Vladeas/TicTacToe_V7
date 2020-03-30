@@ -14,4 +14,7 @@
     <string name="StrResetGame">Reset Game</string>
     <string name="StrScorePlayerOne">Player 1\n0</string>
     <string name="StrScorePlayerTwo">Player 2\n0</string>
+    <string name="StrAreYouCertain">Are you certain that you want to </string>
+    <string name="StrYes">Yes</string>
+    <string name="StrNo">No</string>
 </resources>
