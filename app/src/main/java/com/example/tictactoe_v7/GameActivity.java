@@ -2,6 +2,7 @@ package com.example.tictactoe_v7;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -25,8 +26,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private String areYouCertainString = "Are you certain that you want to ", lastCommand;
     private int boardLength = 3, moveCount, delayTimeMS = 1500, freezeUI = 1;
     private Double gameType;
-    private boolean playerOneTurn = true, freezeGameBoard = false,  playerOneWonLastTurn;
+    private boolean playerOneTurn = true, freezeGameBoard = false,  playerOneWonLastTurn, switchOnOffTruth;
     private ImageButton[][] imageButtons = new ImageButton[boardLength][boardLength];
+
+    public static final String SHARED_PREFS_SOUND = "sharedPrefsSound";
+    public static final String SWITCHSOUND = "switchsoundonoff";
+
 
 
     @Override
@@ -35,6 +40,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_game);
 
+        loadSoundPreference();
         getGameType();
         initializePlayerScoreTextView();
         configureButtons();
@@ -118,25 +124,29 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 3: // Buttons only accessible if the Are You Certain window is visible
-                if(v.getId() == R.id.buttonYes) // continue with the intended action
-                    switch (lastCommand){
+                if(v.getId() == R.id.buttonYes) { // continue with the intended action
+                    buttonSoundMethod();
+                    switch (lastCommand) {
                         case "resetBoard":
-                            configureAreYouCertainView(false,"");
+                            configureAreYouCertainView(false, "");
                             resetBoard();
                             break;
                         case "resetMatch":
-                            configureAreYouCertainView(false,"");
+                            configureAreYouCertainView(false, "");
                             resetMatch();
                             break;
                         case "goMainMenu":
-                            configureAreYouCertainView(false,"");
+                            configureAreYouCertainView(false, "");
                             finish();
                             break;
                         default:
                             break;
                     }
-                else if(v.getId() == R.id.buttonNo) // do not continue
-                    configureAreYouCertainView(false,"");
+                }
+                else if(v.getId() == R.id.buttonNo) { // do not continue
+                    buttonSoundMethod();
+                    configureAreYouCertainView(false, "");
+                }
                 break;
             default:
                 break;
@@ -146,25 +156,26 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // BIG FAT CENTRAL METHOD
     // Check how the move made by a player affects the game
     private void checkGameState(){
-        if (checkForWin()) {
-            if (playerOneTurn) {
+        if (checkForWin()) {// check if the new move won the game
+            if (playerOneTurn) { // player One Won
                 updatePlayerStats(playerOne);
                 updatePointsText(playerOne);
-                if(!checkMatchWinConditions(playerOne)) {
+                if(!checkMatchWinConditions(playerOne)) { // if the match is not over play a new game, if it is end the match
                     gameVictorySoundMethod();
                     playerOneWonLastTurn = true;
                     timedReset();
                 }
-            } else {
+            } else { // player Two Won
                 updatePlayerStats(playerTwo);
                 updatePointsText(playerTwo);
-                if(!checkMatchWinConditions(playerTwo)) {
+                if(!checkMatchWinConditions(playerTwo)) { // if the match is not over play a new game, if it is end the match
                     gameVictorySoundMethod();
                     playerOneWonLastTurn = false;
                     timedReset();
                 }
             }
-        } else if (moveCount == 9) {
+        } else if (moveCount == 9) { // The game is a draw
+            gameDrawSoundMethod();
             displayToastMessage(drawMessage);
             timedReset();
         } else {
@@ -308,39 +319,61 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
     }
 
-    // Play the sound effect for choosing a position
+    // Play the sound effect for choosing a position, also check if the sound is enabled or not
     private void gameBoardSoundMethod(){
-        MediaPlayer positionChoiceSound = MediaPlayer.create(this, R.raw.sword_scrape);
-        positionChoiceSound.start();
+        loadSoundPreference();
+        if(switchOnOffTruth) {
+            MediaPlayer positionChoiceSound = MediaPlayer.create(this, R.raw.sword_scrape);
+            positionChoiceSound.start();
+        }
     }
-    // Play the sound effect for pressing a button
+    // Play the sound effect for pressing a button, also check if the sound is enabled or not
     private void buttonSoundMethod(){
-        MediaPlayer buttonSound = MediaPlayer.create(this, R.raw.swipe_sound_button);
-        buttonSound.start();
+        loadSoundPreference();
+        if(switchOnOffTruth) {
+            MediaPlayer buttonSound = MediaPlayer.create(this, R.raw.swipe_sound_button);
+            buttonSound.start();
+        }
     }
-    // Play the sound effect for winning a game
+    // Play the sound effect for winning a game, also check if the sound is enabled or not
     private void gameVictorySoundMethod(){
-        MediaPlayer gameVictorySound = MediaPlayer.create(this, R.raw.victory_shout);
-        gameVictorySound.start();
+        loadSoundPreference();
+        if(switchOnOffTruth) {
+            MediaPlayer gameVictorySound = MediaPlayer.create(this, R.raw.victory_shout);
+            gameVictorySound.start();
+        }
     }
-    // Play the sound effect for winning a match
+    // Play the sound effect for a draw, also check if the sound is enabled or not
+    private void gameDrawSoundMethod(){
+        loadSoundPreference();
+        if(switchOnOffTruth) {
+            MediaPlayer gameVictorySound = MediaPlayer.create(this, R.raw.draw);
+            gameVictorySound.start();
+        }
+    }
+    // Play the sound effect for winning a match, also check if the sound is enabled or not
     private void matchVictorySoundMethod(){
-        MediaPlayer matchVictorySound = MediaPlayer.create(this, R.raw.victory_music);
-        matchVictorySound.start();
+        loadSoundPreference();
+        if(switchOnOffTruth) {
+            MediaPlayer matchVictorySound = MediaPlayer.create(this, R.raw.victory_music);
+            matchVictorySound.start();
+        }
     }
 
     // Show a Toast
     private void displayToastMessage(String message){ Toast.makeText(this,message,Toast.LENGTH_SHORT).show(); }
 
-
+    // Save the functions purpose in a LastCommand String & show the areYouCertain window
     private void configureButtonResetBoard(){
         configureAreYouCertainView(true, "reset the board ?");
         lastCommand = "resetBoard";
     }
+    // Save the functions purpose in a LastCommand String & show the areYouCertain window
     private void configureButtonResetMatch(){
         configureAreYouCertainView(true, "reset the game ?");
         lastCommand = "resetMatch";
     }
+    // Save the functions purpose in a LastCommand String & show the areYouCertain window
     private void configureButtonGoMainMenu(){
         configureAreYouCertainView(true, "go back to the menu ?");
         lastCommand = "goMainMenu";
@@ -389,6 +422,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         updatePointsText(playerTwo);
     }
 
+    //Ask if the user wants to continue with the action (when pressing buttons)
     private void configureAreYouCertainView(boolean value, String message){
         TextView textViewAreYouCertain = findViewById(R.id.textViewAreYouCertain);
         textViewAreYouCertain.setText(areYouCertainString + message);
@@ -401,5 +435,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             freezeUI = 1;
             linearLayoutAreYouCertainPopUp.setVisibility(View.INVISIBLE);
         }
+    }
+
+    // Get the saved preference for sound in the game (saved in the settings activity)
+    private void loadSoundPreference() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS_SOUND, MODE_PRIVATE);
+        switchOnOffTruth = sharedPreferences.getBoolean(SWITCHSOUND, true);
     }
 }

@@ -19,6 +19,45 @@
         android:padding="20dp"/>
 
 
+    <TextView
+        style="@style/SecondaryTextTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewSettings"
+        android:layout_margin="20dp"
+        android:text="@string/StrSoundOnOff"
+        android:id="@+id/textViewSoundOnOff"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/textViewSoundOnOff"
+        android:layout_toRightOf="@id/textViewSoundOnOff"
+        android:layout_marginLeft="30dp"
+        android:padding="10dp"
+        android:id="@+id/switchSoundOnOff"
+        android:checked="true"/>
+
+    <TextView
+        style="@style/SmallerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/textViewIconCredit"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/StrSoundEffectsCredit"
+        android:id="@+id/textViewSoundEffectsCredit"/>
+
+    <TextView
+        style="@style/SmallerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/buttonGoBack"
+        android:layout_margin="30dp"
+        android:text="@string/StrIconsCredit"
+        android:id="@+id/textViewIconCredit"/>
+
     <Button
         style="@style/SecondaryButtonStyle"
         android:textSize="30sp"

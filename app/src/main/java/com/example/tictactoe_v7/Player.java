@@ -32,5 +32,7 @@ public class Player {
 
     public void incrementNrOfWins() { this.nrOfWins++; }
 
+    public void setNrOfWins(int nrOfWins) {this.nrOfWins = nrOfWins; }
+
     public void resetNrOfWins() { this.nrOfWins = 0; }
 }

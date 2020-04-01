@@ -17,4 +17,7 @@
     <string name="StrAreYouCertain">Are you certain that you want to </string>
     <string name="StrYes">Yes</string>
     <string name="StrNo">No</string>
+    <string name="StrSoundOnOff">Sound Off/On</string>
+    <string name="StrIconsCredit">All used Icons are by creators from the Noun Project</string>
+    <string name="StrSoundEffectsCredit">All used Sound Effects are by creators from Pond5</string>
 </resources>

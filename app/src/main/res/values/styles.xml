@@ -29,6 +29,11 @@
         <item name="android:textSize">25dp</item>
     </style>
 
+    <style name="SmallerText" parent="TextEntity">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
 
     <style name="ButtonStyle" parent="TextEntity">
         <item name="android:textColor">@color/colorBlack</item>

@@ -3,6 +3,7 @@ package com.example.tictactoe_v7;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import android.widget.ImageButton;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private final static String three = "3", five = "5", unDefined = "0";
+    private boolean switchOnOffTruth;
+    public static final String SHARED_PREFS_SOUND = "sharedPrefsSound";
+    public static final String SWITCHSOUND = "switchsoundonoff";
 
 
     @Override
@@ -21,9 +25,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
+        loadSoundPreference();
         configureButtons();
     }
-
 
 
     public void configureButtons(){ // use findViewById & setOnClickListener's for the buttons
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v){ // call each button method when button is pressed
+        loadSoundPreference();
         buttonSoundMethod();
         switch (v.getId()){
             case R.id.buttonPlayGame:
@@ -66,37 +71,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
+    //Use intent to start the new game activity and send a string representative of the chosen game type
     private void configureBestThreeButton() {
         Intent i = new Intent(MainActivity.this,GameActivity.class);
         i.putExtra("Extra_Game_Type",three);
         startActivity(i);
     }
-
+    //Use intent to start the new game activity and send a string representative of the chosen game type
     private void configureBestFiveButton() {
         Intent i = new Intent(MainActivity.this,GameActivity.class);
         i.putExtra("Extra_Game_Type",five);
         startActivity(i);
     }
-
+    //Use intent to start the new game activity and send a string representative of the chosen game type
     private void configureNormalPlayButton() {
         Intent i = new Intent(MainActivity.this,GameActivity.class);
         i.putExtra("Extra_Game_Type",unDefined);
         startActivity(i);
     }
-
+    //Use intent to start the new settings activity
     private void configureSettingsButton(){
         Intent i = new Intent(MainActivity.this,SettingsActivity.class);
         startActivity(i);
     }
-
+    // Make the other play types(Buttons) visible
     private void configurePlayButton() { // show/hide play options
         buttonVisibility(findViewById(R.id.buttonPlayBest3));
         buttonVisibility(findViewById(R.id.buttonPlayBest5));
         buttonVisibility(findViewById(R.id.buttonPlayNormal));
     }
 
-    private void buttonVisibility(View v){ //If The button is visible make it invisible and vice versa
+    //If The button is visible make it invisible and vice versa
+    private void buttonVisibility(View v){
         if(v.getVisibility() == View.VISIBLE) {
             v.setVisibility(View.INVISIBLE);
         }else{
@@ -104,8 +110,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Play the sound effect for pressing a button, also check if the sound is enabled or not
     private void buttonSoundMethod(){
-        MediaPlayer buttonSound = MediaPlayer.create(this, R.raw.swipe_sound_button);
-        buttonSound.start();
+        loadSoundPreference();
+        if(switchOnOffTruth) {
+            MediaPlayer buttonSound = MediaPlayer.create(this, R.raw.swipe_sound_button);
+            buttonSound.start();
+        }
+    }
+
+    // Get the saved preference for sound in the game (taken from the settings activity)
+    public void loadSoundPreference() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS_SOUND, MODE_PRIVATE);
+        switchOnOffTruth = sharedPreferences.getBoolean(SWITCHSOUND, true);
     }
 }
