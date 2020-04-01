@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private final static String three = "3", five = "5", unDefined = "0";
     private boolean switchOnOffTruth;
-    public static final String SHARED_PREFS_SOUND = "sharedPrefsSound";
+    public static final String SHARED_PREFS = "sharedPrefs";
     public static final String SWITCHSOUND = "switchsoundonoff";
 
 
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // Get the saved preference for sound in the game (taken from the settings activity)
     public void loadSoundPreference() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS_SOUND, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         switchOnOffTruth = sharedPreferences.getBoolean(SWITCHSOUND, true);
     }
 }

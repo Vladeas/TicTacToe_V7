@@ -29,8 +29,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean playerOneTurn = true, freezeGameBoard = false,  playerOneWonLastTurn, switchOnOffTruth;
     private ImageButton[][] imageButtons = new ImageButton[boardLength][boardLength];
 
-    public static final String SHARED_PREFS_SOUND = "sharedPrefsSound";
+    public static final String SHARED_PREFS= "sharedPrefs";
+    public static final String SHARED_PREFS_MORE= "sharedPrefsMore";
     public static final String SWITCHSOUND = "switchsoundonoff";
+    public static final String PLAYERONESCORE = "playerOneScore";
+    public static final String PLAYERTWOSCORE = "playerTwoScore";
+    public static final String PLAYERTURN = "playerTurn";
 
 
 
@@ -40,10 +44,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_game);
 
-        loadSoundPreference();
         getGameType();
+        loadPlayerScoreData();//load the previous game score(gametype check in the method)
+        loadSoundPreference();
         initializePlayerScoreTextView();
         configureButtons();
+        updatePointsText(playerOne);
+        updatePointsText(playerTwo);
+        setPlayerTurnIcon();
     }
 
 
@@ -100,12 +108,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             break;
                         } else if(!freezeGameBoard) {
                             gameBoardSoundMethod();
+                            setPlayerTurnIcon();
                             if (playerOneTurn) {
                                 updateOccupiedPositions(v, playerOne, playerOneTag);
-                                setPlayerTurnIcon(playerTwo);
+
                             } else {
                                 updateOccupiedPositions(v, playerTwo, playerTwoTag);
-                                setPlayerTurnIcon(playerOne);
                             }
                             moveCount++;
                             checkGameState();
@@ -165,14 +173,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     playerOneWonLastTurn = true;
                     timedReset();
                 }
+                savePlayerScoreData();//save the score of the players after every win(game type check in the method)
             } else { // player Two Won
                 updatePlayerStats(playerTwo);
                 updatePointsText(playerTwo);
+                savePlayerScoreData();//save the score of the players after every win(game type check in the method)
                 if(!checkMatchWinConditions(playerTwo)) { // if the match is not over play a new game, if it is end the match
                     gameVictorySoundMethod();
                     playerOneWonLastTurn = false;
                     timedReset();
                 }
+                savePlayerScoreData();//save the score of the players after every win(game type check in the method)
             }
         } else if (moveCount == 9) { // The game is a draw
             gameDrawSoundMethod();
@@ -244,10 +255,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         player.getTextViewScoreBoard().setText(playerScore);
     }
     // Show the Icon for which players turn it is
-    private void setPlayerTurnIcon(Player player){
-        ImageView imageViewPlayerTurn = findViewById(R.id.imageViewPlayerTurn);
-        int resID = getResources().getIdentifier(player.getIcon() , "drawable", getPackageName());
-        imageViewPlayerTurn.setBackgroundResource(resID);
+    private void setPlayerTurnIcon(){
+        if(playerOneTurn) {
+            ImageView imageViewPlayerTurn = findViewById(R.id.imageViewPlayerTurn);
+            int resID = getResources().getIdentifier(playerOne.getIcon(), "drawable", getPackageName());
+            imageViewPlayerTurn.setBackgroundResource(resID);
+        }else{
+            ImageView imageViewPlayerTurn = findViewById(R.id.imageViewPlayerTurn);
+            int resID = getResources().getIdentifier(playerTwo.getIcon(), "drawable", getPackageName());
+            imageViewPlayerTurn.setBackgroundResource(resID);
+        }
     }
 
 
@@ -404,11 +421,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         moveCount = 0;
         if(playerOneWonLastTurn) {
             playerOneTurn = true;
-            setPlayerTurnIcon(playerOne);
+            setPlayerTurnIcon();
         }
         else{
             playerOneTurn = false;
-            setPlayerTurnIcon(playerTwo);
+            setPlayerTurnIcon();
         }
     }
     //Reset the score & the board, works when the reset game is pressed
@@ -420,6 +437,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         playerTwo.resetNrOfWins();
         updatePointsText(playerOne);
         updatePointsText(playerTwo);
+        savePlayerScoreData();
+
     }
 
     //Ask if the user wants to continue with the action (when pressing buttons)
@@ -437,9 +456,36 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //Use SharedPreferences to save the score for the player(only in just play mode)
+    private void savePlayerScoreData(){
+        if(gameType == 0) {
+            int scorePlayerOne = playerOne.getNrOfWins();
+            int scorePlayerTwo = playerTwo.getNrOfWins();
+            SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS_MORE, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(PLAYERONESCORE, scorePlayerOne);
+            editor.putInt(PLAYERTWOSCORE, scorePlayerTwo);
+            editor.putBoolean(PLAYERTURN,playerOneTurn);
+            editor.apply();
+        }
+    }
+
+    // Get the saved preference for players score in the game (saved in the settings activity)
+    private void loadPlayerScoreData() {
+        if(gameType == 0) {
+            int scorePlayerOne, scorePlayerTwo;
+            SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS_MORE, MODE_PRIVATE);
+            scorePlayerOne = sharedPreferences.getInt(PLAYERONESCORE, 0);
+            scorePlayerTwo = sharedPreferences.getInt(PLAYERTWOSCORE, 0);
+            playerOneTurn = sharedPreferences.getBoolean(PLAYERTURN, true);
+            playerOne.setNrOfWins(scorePlayerOne);
+            playerTwo.setNrOfWins(scorePlayerTwo);
+        }
+    }
     // Get the saved preference for sound in the game (saved in the settings activity)
     private void loadSoundPreference() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS_SOUND, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
         switchOnOffTruth = sharedPreferences.getBoolean(SWITCHSOUND, true);
     }
 }
