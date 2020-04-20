@@ -1,10 +1,9 @@
-package com.example.tictactoe_v7;
+package com.tictactoevladdanciu.tictactoe_v7;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -431,7 +430,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     //Reset the score & the board, works when the reset game is pressed
     private void resetMatch(){
         setEndMatchWindowVisibility(false);
-        playerOneWonLastTurn = false;
+        playerOneWonLastTurn = true;//player one is the first to start
         resetBoard();
         playerOne.resetNrOfWins();
         playerTwo.resetNrOfWins();
