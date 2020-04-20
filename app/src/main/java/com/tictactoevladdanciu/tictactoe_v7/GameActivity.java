@@ -167,16 +167,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             if (playerOneTurn) { // player One Won
                 updatePlayerStats(playerOne);
                 updatePointsText(playerOne);
+                playerOneWonLastTurn = true;
                 if(!checkMatchWinConditions(playerOne)) { // if the match is not over play a new game, if it is end the match
                     gameVictorySoundMethod();
-                    playerOneWonLastTurn = true;
                     timedReset();
                 }
                 savePlayerScoreData();//save the score of the players after every win(game type check in the method)
             } else { // player Two Won
                 updatePlayerStats(playerTwo);
                 updatePointsText(playerTwo);
-                savePlayerScoreData();//save the score of the players after every win(game type check in the method)
+                playerOneWonLastTurn = true;;//save the score of the players after every win(game type check in the method)
                 if(!checkMatchWinConditions(playerTwo)) { // if the match is not over play a new game, if it is end the match
                     gameVictorySoundMethod();
                     playerOneWonLastTurn = false;
@@ -190,6 +190,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             timedReset();
         } else {
             playerOneTurn = !playerOneTurn;// if the game does not end switch player turn
+            setPlayerTurnIcon();
         }
     }
 
