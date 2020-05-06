@@ -13,11 +13,12 @@ import android.widget.Switch;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Switch switchSoundOnOff;
-    private boolean switchOnOffTruth;
+    private Switch switchSoundOnOff, switchHighContrastOnOff;
+    private boolean switchSoundOnOffTruth, switchHighContrastOnOffTruth;
 
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String SWITCHSOUND = "switchsoundonoff";
+    public static final String SWITCHCONTRAST = "switchhighcontrastonoff";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,11 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     // use findViewById & setOnClickListener's for the buttons
     public void configureButtons(){
         Button buttonGoBack = findViewById(R.id.buttonGoBack);
+        switchHighContrastOnOff = findViewById(R.id.switchHighContrastOnOff);
         switchSoundOnOff = findViewById(R.id.switchSoundOnOff);
 
         buttonGoBack.setOnClickListener(this);
+        switchHighContrastOnOff.setOnClickListener(this);
         switchSoundOnOff.setOnClickListener(this);
     }
 
@@ -49,6 +52,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 configureGoBackButton();
                 break;
             case R.id.switchSoundOnOff:
+                saveData();
+                break;
+            case R.id.switchHighContrastOnOff:
                 saveData();
                 break;
             default:
@@ -64,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     //Play sound for pressing a button
     private void buttonSoundMethod(){
         loadData();
-        if(switchOnOffTruth) {
+        if(switchSoundOnOffTruth) {
             MediaPlayer buttonSound = MediaPlayer.create(this, R.raw.swipe_sound_button);
             buttonSound.start();
         }
@@ -76,17 +82,20 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putBoolean(SWITCHSOUND, switchSoundOnOff.isChecked());
+        editor.putBoolean(SWITCHCONTRAST, switchHighContrastOnOff.isChecked());
         editor.apply();
     }
 
     // Get the saved preference for sound in the game (saved in the settings activity)
     private void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        switchOnOffTruth = sharedPreferences.getBoolean(SWITCHSOUND, true);
+        switchSoundOnOffTruth = sharedPreferences.getBoolean(SWITCHSOUND, true);
+        switchHighContrastOnOffTruth = sharedPreferences.getBoolean(SWITCHCONTRAST, false);
     }
 
     // Update the switch to show the same value as saved in shared preferences
     private void updateViews() {
-        switchSoundOnOff.setChecked(switchOnOffTruth);
+        switchSoundOnOff.setChecked(switchSoundOnOffTruth);
+        switchHighContrastOnOff.setChecked(switchHighContrastOnOffTruth);
     }
 }

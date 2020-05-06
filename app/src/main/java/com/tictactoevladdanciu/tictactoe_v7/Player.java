@@ -20,6 +20,10 @@ public class Player {
 
     public void setTextViewScoreBoard(TextView textViewScoreBoard) { this.textViewScoreBoard = textViewScoreBoard; }
 
+    public void setNrOfWins(int nrOfWins) {this.nrOfWins = nrOfWins; }
+
+    public void setIcon(String icon) { this.icon = icon; }
+
     public String getName() { return this.name; }
 
     public String getIcon(){
@@ -31,8 +35,6 @@ public class Player {
     }
 
     public void incrementNrOfWins() { this.nrOfWins++; }
-
-    public void setNrOfWins(int nrOfWins) {this.nrOfWins = nrOfWins; }
 
     public void resetNrOfWins() { this.nrOfWins = 0; }
 }

@@ -39,6 +39,26 @@
         android:checked="true"/>
 
     <TextView
+        style="@style/SecondaryTextTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewSoundOnOff"
+        android:layout_margin="20dp"
+        android:text="@string/StrHighContrastOnOff"
+        android:id="@+id/textViewHighContrastOnOff"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/textViewHighContrastOnOff"
+        android:layout_alignRight="@id/switchSoundOnOff"
+        android:layout_toRightOf="@id/textViewHighContrastOnOff"
+        android:layout_marginLeft="30dp"
+        android:padding="10dp"
+        android:id="@+id/switchHighContrastOnOff"
+        android:checked="false"/>
+
+    <TextView
         style="@style/SmallerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
