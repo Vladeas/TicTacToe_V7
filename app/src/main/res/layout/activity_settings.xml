@@ -29,6 +29,7 @@
         android:id="@+id/textViewSoundOnOff"/>
 
     <Switch
+        android:theme="@style/SwitchTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/textViewSoundOnOff"
@@ -48,6 +49,7 @@
         android:id="@+id/textViewHighContrastOnOff"/>
 
     <Switch
+        android:theme="@style/SwitchTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/textViewHighContrastOnOff"
