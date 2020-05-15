@@ -513,8 +513,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setHighContrastIcons(){
         if(switchHighContrastOnOffTruth) {
-            playerOne.setIcon("roman_helmet_512px_royal_purple");
-            playerOne.getTextViewScoreBoard().setTextColor(getResources().getColor(R.color.colorRoyalPurple));// lots of code just to get one color...Damn
+            playerOne.setIcon("roman_helmet_512px_violet");
+            playerOne.getTextViewScoreBoard().setTextColor(getResources().getColor(R.color.colorViolet));// lots of code just to get one color...Damn
             playerTwo.setIcon("viking_helmet_512px_forest_green");
             playerTwo.getTextViewScoreBoard().setTextColor(getResources().getColor(R.color.colorForestGreen));// Damn x2
         }
