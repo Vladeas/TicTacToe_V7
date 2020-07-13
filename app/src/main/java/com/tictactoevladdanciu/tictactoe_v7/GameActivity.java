@@ -4,10 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -27,6 +27,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Double gameType;
     private boolean playerOneTurn = true, freezeGameBoard = false,  playerOneWonLastTurn, switchSoundOnOffTruth, switchHighContrastOnOffTruth;
     private ImageButton[][] imageButtons = new ImageButton[boardLength][boardLength];
+    private SoundEffects soundEffects;
 
     public static final String SHARED_PREFS= "sharedPrefs";
     public static final String SHARED_PREFS_MORE= "sharedPrefsMore";
@@ -47,6 +48,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_game);
 
+        soundEffects = new SoundEffects(this);
         initializePlayerScoreTextView();// tie the Score Text View to the player Object
         loadSettingsPreference();
         setHighContrastIcons(); // Check if high contrast is turned on and use the appropriate icons
@@ -57,6 +59,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         updatePointsText(playerTwo);
         setPlayerTurnIcon();
     }
+
+    /*
+    public static SoundEffects getSoundEffects(){
+        return soundEffects;
+    }
+
+     */
 
 
     // BIG FAT CENTRAL METHOD
@@ -358,48 +367,41 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // Play the sound effect for choosing a position, also check if the sound is enabled or not
-    private void gameBoardSoundMethod(){
+    private void gameBoardSoundMethod(){// sword_scrape
         loadSettingsPreference();
-        if(switchSoundOnOffTruth) {
-            MediaPlayer positionChoiceSound = MediaPlayer.create(this, R.raw.sword_scrape);
-            positionChoiceSound.start();
-        }
+        if(switchSoundOnOffTruth)
+            soundEffects.playSwordScrape();
     }
     // Play the sound effect for pressing a button, also check if the sound is enabled or not
-    private void buttonSoundMethod(){
+    private void buttonSoundMethod(){ // swipe_sound_button
         loadSettingsPreference();
-        if(switchSoundOnOffTruth) {
-            MediaPlayer buttonSound = MediaPlayer.create(this, R.raw.swipe_sound_button);
-            buttonSound.start();
-        }
+        if(switchSoundOnOffTruth)
+            soundEffects.playSwipeSoundButton();
     }
     // Play the sound effect for winning a game, also check if the sound is enabled or not
     private void gameVictorySoundMethod(){
         loadSettingsPreference();
-        if(switchSoundOnOffTruth) {
-            MediaPlayer gameVictorySound = MediaPlayer.create(this, R.raw.victory_shout);
-            gameVictorySound.start();
-        }
+        if(switchSoundOnOffTruth)
+            soundEffects.playVictoryShout();
     }
     // Play the sound effect for a draw, also check if the sound is enabled or not
     private void gameDrawSoundMethod(){
         loadSettingsPreference();
-        if(switchSoundOnOffTruth) {
-            MediaPlayer gameVictorySound = MediaPlayer.create(this, R.raw.draw);
-            gameVictorySound.start();
-        }
+        if(switchSoundOnOffTruth)
+            soundEffects.playDraw();
     }
     // Play the sound effect for winning a match, also check if the sound is enabled or not
     private void matchVictorySoundMethod(){
         loadSettingsPreference();
-        if(switchSoundOnOffTruth) {
-            MediaPlayer matchVictorySound = MediaPlayer.create(this, R.raw.victory_music);
-            matchVictorySound.start();
-        }
+        if(switchSoundOnOffTruth)
+            soundEffects.playVictoryMusic();
     }
 
     // Show a Toast
-    private void displayToastMessage(String message){ Toast.makeText(this,message,Toast.LENGTH_SHORT).show(); }
+    private void displayToastMessage(String message){
+        Toast toast = Toast.makeText(this,message,Toast.LENGTH_SHORT);
+        //toast.setGravity(Gravity.CENTER_VERTICAL,0,0);
+        toast.show(); }
 
     // Save the functions purpose in a LastCommand String & show the areYouCertain window
     private void configureButtonResetBoard(){
@@ -513,10 +515,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setHighContrastIcons(){
         if(switchHighContrastOnOffTruth) {
-            playerOne.setIcon("roman_helmet_512px_violet");
-            playerOne.getTextViewScoreBoard().setTextColor(getResources().getColor(R.color.colorViolet));// lots of code just to get one color...Damn
+            playerOne.setIcon("roman_helmet_512px_light_purple");
+            playerOne.getTextViewScoreBoard().setTextColor(getResources().getColor(R.color.colorPurpleLight));// lots of code just to get one color...Damn
             playerTwo.setIcon("viking_helmet_512px_forest_green");
             playerTwo.getTextViewScoreBoard().setTextColor(getResources().getColor(R.color.colorForestGreen));// Damn x2
         }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        soundEffects.onDestroy();
     }
 }

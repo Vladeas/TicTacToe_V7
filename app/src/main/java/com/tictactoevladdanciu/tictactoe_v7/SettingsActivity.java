@@ -15,6 +15,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     private Switch switchSoundOnOff, switchHighContrastOnOff;
     private boolean switchSoundOnOffTruth, switchHighContrastOnOffTruth;
+    private SoundEffects soundEffects;
 
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String SWITCHSOUND = "switchsoundonoff";
@@ -26,6 +27,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_settings);
 
+        soundEffects = new SoundEffects(this);
         configureButtons();
 
         loadData();
@@ -70,10 +72,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     //Play sound for pressing a button
     private void buttonSoundMethod(){
         loadData();
-        if(switchSoundOnOffTruth) {
-            MediaPlayer buttonSound = MediaPlayer.create(this, R.raw.swipe_sound_button);
-            buttonSound.start();
-        }
+        if(switchSoundOnOffTruth)
+            soundEffects.playSwipeSoundButton();
     }
 
     //Use SharedPreferences to save the Sound State
@@ -97,5 +97,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private void updateViews() {
         switchSoundOnOff.setChecked(switchSoundOnOffTruth);
         switchHighContrastOnOff.setChecked(switchHighContrastOnOffTruth);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        soundEffects.onDestroy();
     }
 }

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +14,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private final static String three = "3", five = "5", unDefined = "0";
     private boolean switchOnOffTruth;
+    private SoundEffects soundEffects;
+
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String SWITCHSOUND = "switchsoundonoff";
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
+        soundEffects = new SoundEffects(this);
         loadSoundPreference();
         configureButtons();
     }
@@ -113,15 +115,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Play the sound effect for pressing a button, also check if the sound is enabled or not
     private void buttonSoundMethod(){
         loadSoundPreference();
-        if(switchOnOffTruth) {
-            MediaPlayer buttonSound = MediaPlayer.create(this, R.raw.swipe_sound_button);
-            buttonSound.start();
-        }
+        if(switchOnOffTruth)
+            soundEffects.playSwipeSoundButton();
     }
 
     // Get the saved preference for sound in the game (taken from the settings activity)
     public void loadSoundPreference() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         switchOnOffTruth = sharedPreferences.getBoolean(SWITCHSOUND, true);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        soundEffects.onDestroy();
     }
 }
