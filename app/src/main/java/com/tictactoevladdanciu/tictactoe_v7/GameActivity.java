@@ -20,7 +20,7 @@ import android.widget.Toast;
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Player playerOne = new Player("Player 1","roman_helmet_512px_white");
-    private Player playerTwo = new Player("Player 2","viking_helmet_512px_grey");
+    private Player playerTwo = new Player("Player 2","viking_helmet_512px_dark_grey");
     private String standardIcons = "fort_512px_white", unoccupiedString = "unoccupied", playerOneTag = "playerOneHere", playerTwoTag = "playerTwoHere", drawMessage = "The match was a Draw !";
     private String areYouCertainString = "Are you certain that you want to ", lastCommand;
     private int boardLength = 3, moveCount, delayTimeMS = 1500, freezeUI = 1;

@@ -3,7 +3,6 @@ package com.tictactoevladdanciu.tictactoe_v7;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 
@@ -27,7 +26,7 @@ public class SoundEffects {
             soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         }
 
-        sword_scrape = soundPool.load(this.context, R.raw.sword_scrape, 1);
+        sword_scrape = soundPool.load(this.context, R.raw.swipe_sound_button, 1);
         swipe_sound_button = soundPool.load(this.context, R.raw.swipe_sound_button, 1);
         victory_shout = soundPool.load(this.context, R.raw.victory_shout, 1);
         draw = soundPool.load(this.context, R.raw.draw, 1);
